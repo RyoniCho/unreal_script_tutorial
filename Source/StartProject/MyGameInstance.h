@@ -17,6 +17,18 @@ struct FStudentData
 		Order=-1;
 	}
 	FStudentData(const FString& InName, const int32& InOrder) :Name(InName),Order(InOrder){}
+
+	bool operator==(const FStudentData& InOther) const 
+	{
+		return Order == InOther.Order;
+	}
+
+	friend FORCEINLINE uint32 GetTypeHash(const FStudentData& InStudentData)
+	{
+		return GetTypeHash(InStudentData.Order);
+	}
+
+
 	UPROPERTY()
 	FString Name;
 	UPROPERTY()
@@ -51,6 +63,8 @@ private:
 	FString SchoolName;
 
 	TArray<FStudentData> StudentDatas;
+	TMap<int32, FString> StudentsMap;
+
 	
 	
 	

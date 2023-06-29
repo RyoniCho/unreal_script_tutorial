@@ -21,6 +21,7 @@ void UMyGameInstance::Init()
 	TArrayTutorial();
 	DelegateTutorial();
 	StructTutorial();
+	TMapTutorial();
 	
 	SchoolName = TEXT("SKKU");
 	UClass* ClassRuntime=GetClass();
@@ -218,6 +219,50 @@ void UMyGameInstance::TSetTutorial()
 
 void UMyGameInstance::TMapTutorial()
 {
+	Algo::Transform(StudentDatas, StudentsMap, [](const FStudentData& Val) {
+		return TPair<int32, FString>(Val.Order, Val.Name);
+		});
+
+	UE_LOG(LogTemp, Log, TEXT("순번에 따른 학생 맵의 레코드수 : %d"), StudentsMap.Num());
+
+	TMap<FString, int32> StudentsMapByUniqueName;
+
+	Algo::Transform(StudentDatas, StudentsMapByUniqueName, [](const FStudentData& Val) {
+		
+		return TPair<FString, int32>(Val.Name, Val.Order);
+
+		});
+
+	UE_LOG(LogTemp, Log, TEXT("이름에 따른 학생 맵의 레코드수 : %d"), StudentsMapByUniqueName.Num());
+
+	TMultiMap<FString, int32> StudentsMapByName;
+
+	Algo::Transform(StudentDatas, StudentsMapByName, [](const FStudentData& Val) {
+
+		return TPair<FString, int32>(Val.Name, Val.Order);
+
+		});
+
+	UE_LOG(LogTemp, Log, TEXT("이름에 따른 학생  멀티맵의 레코드수 : %d"), StudentsMapByName.Num());
+
+	const FString TargetName(TEXT("이혜은"));
+	TArray<int32> AllOrders;
+
+	StudentsMapByName.MultiFind(TargetName, AllOrders);
+
+	UE_LOG(LogTemp, Log, TEXT("이름이 %s인 학생수 : %d"), *TargetName, AllOrders.Num());
+
+	TSet<FStudentData> StudentsSet;
+
+	const int32 arrayNum = 300;
+
+	for (int32 idx = 0; idx < arrayNum; ++idx)
+	{
+		StudentsSet.Emplace(FStudentData(MakeRandomName(), idx));
+	}
+
+
+
 }
 FString MakeRandomName()
 {
