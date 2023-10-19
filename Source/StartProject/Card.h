@@ -9,7 +9,7 @@
 UENUM()
 enum class ECardType : uint8
 {
-	Student=1 UMETA(DisplayName="For Student"),
+	Student=1 UMETA(DisplayName="For Student"), //UMETA: 필드정보에대한 메타정보를 집어넣을수있음(언리얼엔진)
 	Teacher UMETA(DisplayName="For Teacher"),
 	Staff UMETA(DisplayName="For Staff"),
 	Invalid

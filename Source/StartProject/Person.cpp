@@ -8,6 +8,7 @@ UPerson::UPerson()
 {
 	Name=TEXT("Unknown");
 	Year=1;
+	//FName인걸 상기시키기위해 NAME_CARD라고 써준다.
 	Card= CreateDefaultSubobject<UCard>(TEXT("NAME_CARD"));
 }
 

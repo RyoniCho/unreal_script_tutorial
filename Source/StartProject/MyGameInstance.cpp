@@ -5,6 +5,7 @@
 #include "Student.h"
 #include "Teacher.h"
 #include "Staff.h"
+#include "Card.h"
 #include "Algo/Accumulate.h"
 
 
@@ -18,10 +19,12 @@ void UMyGameInstance::Init()
 {
 	Super::Init();
 
+	CompositionTutorial();
 	TArrayTutorial();
 	DelegateTutorial();
 	StructTutorial();
 	TMapTutorial();
+
 	
 	SchoolName = TEXT("SKKU");
 	UClass* ClassRuntime=GetClass();
@@ -53,6 +56,14 @@ void UMyGameInstance::Init()
 	
 	student->DoLesson();
 	teacher->DoLesson();
+
+	//리플렉션으로 DoLesson호출
+	UFunction* DoLessonFunc = teacher->GetClass()->FindFunctionByName(TEXT("DoLesson"));
+	if (DoLessonFunc)
+	{
+		teacher->ProcessEvent(DoLessonFunc, nullptr);
+	}
+
 	UE_LOG(LogTemp,Log,TEXT("====================="))
 	TArray<UPerson*> Persons = { NewObject<UStudent>(),  NewObject<UTeacher>(), NewObject<UStaff>()};
 	for(const auto Person :Persons) 
@@ -61,6 +72,7 @@ void UMyGameInstance::Init()
 	}
 	UE_LOG(LogTemp,Log,TEXT("====================="))
 
+	//Casting으로 인터페이스상속했는지 확인가능. 
 	for(const auto Person :Persons) 
 	{
 		ILessonInterface* LessonInterface = Cast<ILessonInterface>(Person);
@@ -219,7 +231,7 @@ void UMyGameInstance::TSetTutorial()
 
 void UMyGameInstance::TMapTutorial()
 {
-	Algo::Transform(StudentDatas, StudentsMap, [](const FStudentData& Val) {
+	/*Algo::Transform(StudentDatas, StudentsMap, [](const FStudentData& Val) {
 		return TPair<int32, FString>(Val.Order, Val.Name);
 		});
 
@@ -259,8 +271,7 @@ void UMyGameInstance::TMapTutorial()
 	for (int32 idx = 0; idx < arrayNum; ++idx)
 	{
 		StudentsSet.Emplace(FStudentData(MakeRandomName(), idx));
-	}
-
+	}*/
 
 
 }
@@ -305,6 +316,28 @@ void UMyGameInstance::StructTutorial()
 		});
 	UE_LOG(LogTemp,Log,TEXT("중복없는 학생의 이름수 : %d "),AllUniqueNames.Num());
 	
+}
+
+void UMyGameInstance::CompositionTutorial()
+{
+	TArray<UPerson*> Persons = { NewObject<UStudent>(),NewObject<UTeacher>(),NewObject<UStaff>() };
+
+	for (const auto Person : Persons)
+	{
+		const UCard* OwnCard = Person->GetCard();
+		check(OwnCard);
+		auto CardType = OwnCard->GetCardType();
+		UE_LOG(LogTemp, Log, TEXT("%s 님이 소유한 카드 종류: %d"), *Person->GetName(), CardType);
+
+
+		const UEnum* CardEnumType = FindObject<UEnum>(nullptr, TEXT("/Script/UnrealComposition.ECardType"));
+		if (CardEnumType)
+		{
+			FString CardMetaData=CardEnumType->GetDisplayNameTextByValue((int64)CardType).ToString();
+
+			UE_LOG(LogTemp, Log, TEXT("%s 님이 소유한 카드 종류: %s"), *Person->GetName(), *CardMetaData);
+		}
+	}
 }
 
 

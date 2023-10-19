@@ -48,6 +48,7 @@ class STARTPROJECT_API UMyGameInstance : public UGameInstance
 public:
 	UMyGameInstance();
 	virtual void Init() override;
+	void CompositionTutorial();
 	void StringTutorial();
 	void DelegateTutorial();
 	void TArrayTutorial();

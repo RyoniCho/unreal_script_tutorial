@@ -9,6 +9,7 @@ UTeacher::UTeacher()
 	Name=TEXT("lee");
 	Year=3;
 	Id=1;
+	//이미 person에서 card는생성된상태. 타입만 선언해준다.
 	Card->SetCardType(ECardType::Teacher);
 }
 
