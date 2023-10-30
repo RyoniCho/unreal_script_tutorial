@@ -24,5 +24,12 @@ const FString& UPerson::GetName() const
 
 void UPerson::SetName(const FString& InName)
 {
-	Name=InName;
+	Name = InName;
+}
+
+void UPerson::Serialize(FArchive& Ar)
+{
+	UObject::Serialize(Ar);
+
+	
 }

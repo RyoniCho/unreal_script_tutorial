@@ -28,6 +28,15 @@ struct FStudentData
 		return GetTypeHash(InStudentData.Order);
 	}
 
+	friend  FArchive& operator<<(FArchive& Ar, FStudentData& InStudentData)
+	{
+		Ar<<InStudentData.Name;
+		Ar<<InStudentData.Order;
+
+		return Ar;
+	}
+
+
 
 	UPROPERTY()
 	FString Name;
@@ -55,6 +64,7 @@ public:
 	void TSetTutorial();
 	void TMapTutorial();
 	void StructTutorial();
+	void SerializationTutorial();
 	
 private:
 	UPROPERTY()
@@ -65,6 +75,9 @@ private:
 
 	TArray<FStudentData> StudentDatas;
 	TMap<int32, FString> StudentsMap;
+
+	UPROPERTY()
+	TObjectPtr<class USerializeStudent> StudentSrc;
 
 	
 	

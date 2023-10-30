@@ -24,3 +24,11 @@ void UStudent::GetNotification(const FString& School, const FString& NewCourseIn
 {
 	UE_LOG(LogTemp,Log,TEXT("[학생] %s : %s"),*School,*NewCourseInfo);
 }
+
+void UStudent::Serialize(FArchive& Ar)
+{
+	Super::Serialize(Ar);
+	
+	// Ar << Id;
+	// Ar << Name;
+}

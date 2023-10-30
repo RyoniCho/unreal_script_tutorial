@@ -20,6 +20,8 @@ public:
 	UStudent(); 
 	virtual void DoLesson() override;
 	void GetNotification(const FString& School,const FString& NewCourseInfo);
+
+	virtual void Serialize(FArchive& Ar) override;
 	
 
 private:
